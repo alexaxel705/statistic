@@ -1,4 +1,10 @@
-﻿local NickNameBar = {}
+﻿local screenWidth, screenHeight = guiGetScreenSize()
+local scale = (screenWidth/1920)+(screenHeight/1080)
+local scalex = (screenWidth/1920)
+local scaley = (screenHeight/1080)
+
+
+local NickNameBar = {}
 local NickNameBarW, NickNameBarH = 200, 40
 local StaminaBarW, StaminaBarH = 75, 1
 
@@ -50,18 +56,19 @@ addEventHandler("onClientResourceStart", getResourceRootElement(), Start)
 
 
 function DrawStaminaBar()
+	NickNameBar = {}
+	local cx,cy,cz = getCameraMatrix()
 	for _, thePlayer in pairs(getElementsByType("player", getRootElement(), true)) do
 		local x,y,z = getPedBonePosition(thePlayer, 8)
-		local cx,cy,cz = getCameraMatrix()
-		local depth = getDistanceBetweenPoints3D(x,y,z,cx,cy,cz)/6
 		local sx,sy = getScreenFromWorldPosition(x,y,z+0.5)
 		if(sx and sy) then
-			NickNameBar[thePlayer] = false
-			
+			local depth = getDistanceBetweenPoints3D(x,y,z,cx,cy,cz)/6
 			dxDrawImage(sx-((NickNameBarW/depth)/2),sy, NickNameBarW/depth, NickNameBarH/depth, DrawNicknameBar(thePlayer))
 		end
 	end
 end
+
+
 
 
 
@@ -90,10 +97,13 @@ function DrawNicknameBar(thePlayer)
 		dxSetRenderTarget(NickNameBar[thePlayer], true)
 		dxSetBlendMode("modulate_add")
 		
-		if(PlayersAction[thePlayer]) then
-			dxDrawText(PlayersAction[thePlayer], NickNameBarW,0, 0,0, tocolor(255,255,255,255), 1, 1, "default-bold", "center", "top")
+		if(PlayersAction[thePlayer]) then			
+			dxDrawText(PlayersAction[thePlayer], NickNameBarW,0, 2,2, tocolor(0,0,0,255), 1, 1, "default-bold", "center", "top", false, false, false, true, true)
+			dxDrawText(PlayersAction[thePlayer], NickNameBarW,0, 0,0, tocolor(255,255,255,255), 1, 1, "default-bold", "center", "top", false, false, false, true, true)
 		end
-		dxDrawText(getPlayerName(thePlayer).."("..getElementData(thePlayer, "id")..")", NickNameBarW,NickNameBarH/2.4, 0,0, tocolor(255,255,255,255), 1, 1, "default-bold", "center", "top")
+		
+		dxDrawText(getPlayerName(thePlayer).."("..getElementData(thePlayer, "id")..")", NickNameBarW,NickNameBarH/2.4, 2,2, tocolor(0,0,0,255), 1, 1, "default-bold", "center", "top", false, false, false, true, true)
+		dxDrawText(getPlayerName(thePlayer).."("..getElementData(thePlayer, "id")..")", NickNameBarW,NickNameBarH/2.4, 0,0, tocolor(255,255,255,255), 1, 1, "default-bold", "center", "top", false, false, false, true, true)
 		if(thePlayer == localPlayer) then
 			dxDrawRectangle((NickNameBarW/2)-(StaminaBarW/2),NickNameBarH-3, StaminaBarW, StaminaBarH, tocolor(50,50,50, 50), false, true)
 			dxDrawRectangle((NickNameBarW/2),NickNameBarH-3, ((Stamina/getMaxStamina())*getMaxStamina()*(StaminaBarW/10)), StaminaBarH, tocolor(150,127,200, 150), false, true)
@@ -105,7 +115,6 @@ function DrawNicknameBar(thePlayer)
 	end
 	return NickNameBar[thePlayer]
 end
-
 
 
 function updateStamina()
