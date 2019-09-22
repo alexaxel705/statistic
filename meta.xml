@@ -2,4 +2,6 @@
 	<info name="statistic" version="1.0.0" type="script" author="alexaxel705" description="statistic"/>
 	
 	<script src="server.lua" type="server"/>
+	<script src="client.lua" type="client"/>
+	<export function="PlayerActionEvent" type="client"/>
 </meta>
