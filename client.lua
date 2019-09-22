@@ -67,7 +67,6 @@ end
 
 
 
-
 local PlayersAction = {}
 local timersAction = {}
 function PlayerActionEvent(message,thePlayer)
