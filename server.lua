@@ -49,11 +49,12 @@ addEventHandler("onPlayerQuit", getRootElement(), Quit)
 
 
 local Coords = {}
-local SendToServer = 5 -- Отправлять на сервер каждые
+local SendToServer = 30 -- Отправлять на сервер каждые
 setTimer(function()
 	for theKey,thePlayer in ipairs(getElementsByType("player")) do
 		local i,d = getElementInterior(thePlayer), getElementDimension(thePlayer)
-		if(i == 0 and d == 0) then
+		local theVehicle = getPedOccupiedVehicle(thePlayer)
+		if(i == 0 and d == 0 and theVehicle) then
 			local x,y,_ = getElementPosition(thePlayer)
 			x, y = math.round(x), math.round(y)
 			if(not Coords[x]) then Coords[x] = {} end
@@ -62,7 +63,7 @@ setTimer(function()
 			if(SendToServer == 0) then
 				callRemote("http://109.227.228.4/engine/include/MTA/stats/zone.php", ResultGet, toJSON(Coords))
 				Coords = {}
-				SendToServer = 5
+				SendToServer = 30
 			else
 				SendToServer = SendToServer-1
 			end
