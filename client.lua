@@ -43,7 +43,8 @@ function checkKey()
 	local theVehicle = getPedOccupiedVehicle(localPlayer)
 	if(theVehicle) then
 		local i, d = getElementInterior(theVehicle), getElementDimension(theVehicle)
-		if(i == 0 and d == 0) then
+		local seat = getPedOccupiedVehicleSeat(localPlayer)
+		if(i == 0 and d == 0 and seat == 0) then
 			local x, y, z = getElementPosition(theVehicle)
 			x, y = math.round(x), math.round(y)
 			if(not Coords[x]) then Coords[x] = {} end
