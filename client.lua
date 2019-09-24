@@ -1,4 +1,6 @@
-﻿local NickNameBar = {}
+﻿local screenWidth, screenHeight = guiGetScreenSize()
+local scale = ((screenWidth/1920)+(screenHeight/1080))
+local NickNameBar = {}
 local NickNameBarW, NickNameBarH = 200, 40
 local StaminaBarW, StaminaBarH = 75, 1
 
@@ -107,9 +109,15 @@ function DrawStaminaBar()
 		local x,y,z = getPedBonePosition(thePlayer, 8)
 		local sx,sy = getScreenFromWorldPosition(x,y,z+0.3)
 		if(sx and sy) then
-			local depth = getDistanceBetweenPoints3D(x,y,z,cx,cy,cz)/7
-			
-			dxDrawImage(sx-((NickNameBarW/depth)/2),sy-((NickNameBarH/depth)/2), NickNameBarW/depth, NickNameBarH/depth, DrawNicknameBar(thePlayer))
+			local dist = getDistanceBetweenPoints3D(x,y,z,cx,cy,cz)
+			local depth = dist/5
+			if(depth > 1.5) then
+				depth = 1.5
+			end
+			local alpha = 255-(dist*5)
+			if(alpha >= 0) then
+				dxDrawImage(sx-((NickNameBarW/depth)/2),sy-((NickNameBarH/depth)/2), NickNameBarW/(depth), NickNameBarH/(depth), DrawNicknameBar(thePlayer), 0, 0, 0, tocolor(255,255,255,alpha), true)
+			end
 		end
 	end
 end
@@ -144,12 +152,12 @@ function DrawNicknameBar(thePlayer)
 	dxSetBlendMode("modulate_add")
 	
 	if(PlayersAction[thePlayer]) then			
-		dxDrawText(PlayersAction[thePlayer], NickNameBarW,0, 2,2, tocolor(0,0,0,255), 1, 1, "default-bold", "center", "top", false, false, false, true, not getElementData(localPlayer, "LowPCMode"))
-		dxDrawText(PlayersAction[thePlayer], NickNameBarW,0, 0,0, tocolor(255,255,255,255), 1, 1, "default-bold", "center", "top", false, false, false, true, not getElementData(localPlayer, "LowPCMode"))
+		dxDrawText(PlayersAction[thePlayer], NickNameBarW,0, 2,2, tocolor(0,0,0,255), scale*0.8, "default-bold", "center", "top", false,false,false,true,not getElementData(localPlayer, "LowPCMode"))
+		dxDrawText(PlayersAction[thePlayer], NickNameBarW,0, 0,0, tocolor(255,255,255,255), scale*0.8, "default-bold", "center", "top", false,false,false,true,not getElementData(localPlayer, "LowPCMode"))
 	end
 	
-	dxDrawText(getPlayerName(thePlayer).."("..getElementData(thePlayer, "id")..")", NickNameBarW,NickNameBarH/2.4, 2,2, tocolor(0,0,0,255), 1, 1, "default-bold", "center", "top", false, false, false, true, not getElementData(localPlayer, "LowPCMode"))
-	dxDrawText(getPlayerName(thePlayer).."("..getElementData(thePlayer, "id")..")", NickNameBarW,NickNameBarH/2.4, 0,0, tocolor(255,255,255,255), 1, 1, "default-bold", "center", "top", false, false, false, true, not getElementData(localPlayer, "LowPCMode"))
+	dxDrawText(getPlayerName(thePlayer).."("..getElementData(thePlayer, "id")..")", NickNameBarW,NickNameBarH/2.4, 2,2, tocolor(0,0,0,255), scale*0.8, "default-bold", "center", "top", false,false,false,true,not getElementData(localPlayer, "LowPCMode"))
+	dxDrawText(getPlayerName(thePlayer).."("..getElementData(thePlayer, "id")..")", NickNameBarW,NickNameBarH/2.4, 0,0, tocolor(255,255,255,255), scale*0.8, "default-bold", "center", "top", false,false,false,true,not getElementData(localPlayer, "LowPCMode"))
 	if(thePlayer == localPlayer) then
 		dxDrawRectangle((NickNameBarW/2)-(StaminaBarW/2),NickNameBarH-3, StaminaBarW, StaminaBarH, tocolor(50,50,50, 50), false, true)
 		dxDrawRectangle((NickNameBarW/2),NickNameBarH-3, ((Stamina/getMaxStamina())*getMaxStamina()*(StaminaBarW/10)), StaminaBarH, tocolor(150,127,200, 150), false, not getElementData(localPlayer, "LowPCMode"))
