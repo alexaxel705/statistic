@@ -6,8 +6,7 @@ function math.round(number, decimals, method)
     else return tonumber(("%."..decimals.."f"):format(number)) end
 end
 
-function ResultGet()
-
+function ResultGet(back)
 end
 
 function player_Wasted()
