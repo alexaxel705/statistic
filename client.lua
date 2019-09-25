@@ -32,6 +32,33 @@ end
 setTimer(checkKey,100,0)
 
 
+
+
+function PlayerVehicleExit(theVehicle, seat)
+	if(source == localPlayer) then 
+		if(seat == 0) then
+			SendCoordsToServer()
+		end
+	end
+end
+addEventHandler("onClientPlayerVehicleExit", getRootElement(), PlayerVehicleExit)
+
+
+
+addCommandHandler( "getinfo",
+	function( )
+		local info = dxGetStatus( )
+		for k, v in pairs( info ) do
+			outputChatBox( k .. " : " .. tostring( v ) )
+		end
+	end
+)
+
+
+
+
+
+
 function math.round(number, decimals, method)
     decimals = decimals or 0
     local factor = 10 ^ decimals
