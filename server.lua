@@ -11,9 +11,12 @@ end
 
 function player_Wasted()
 	local x,y,_ = getElementPosition(source)
-	x = math.round(x)
-	y = math.round(y)
-	callRemote("http://109.227.228.4/engine/include/MTA/stats/death.php", ResultGet, toJSON({x, y}))
+	local i, d = getElementInterior(source), getElementDimension(source)
+	if(i == 0 and d == 0) then
+		x = math.round(x)
+		y = math.round(y)
+		callRemote("http://109.227.228.4/engine/include/MTA/stats/death.php", ResultGet, toJSON({x, y}))
+	end
 end
 addEventHandler("onPlayerWasted", root, player_Wasted)
 

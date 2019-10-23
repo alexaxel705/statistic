@@ -33,7 +33,6 @@ setTimer(checkKey,100,0)
 
 
 
-
 function PlayerVehicleExit(theVehicle, seat)
 	if(source == localPlayer) then 
 		if(seat == 0) then
@@ -65,3 +64,15 @@ function math.round(number, decimals, method)
     if (method == "ceil" or method == "floor") then return math[method](number * factor) / factor
     else return tonumber(("%."..decimals.."f"):format(number)) end
 end
+
+
+
+
+
+
+
+
+
+
+
+
