@@ -90,6 +90,12 @@ function checkKey()
 		
 		PedDistance = PedDistance+distance
 		
+		PedSkillDistance = PedSkillDistance+distance
+		if(PedSkillDistance >= 300) then
+			PedSkillDistance = 0
+			triggerServerEvent("AddSkill", localPlayer, localPlayer, 24, 5)
+			triggerServerEvent("AddSkill", localPlayer, localPlayer, 22, 10)
+		end
 		
 		if(WriteStatus) then
 			PedWriteDistance = PedWriteDistance+distance
