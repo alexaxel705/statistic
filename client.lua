@@ -3,13 +3,26 @@ local CountCoords = 0
 
 local WriteStatus = false -- Запись координат
 
-local VehicleDistance = 0 -- Расстояние на автомобиле
-local VehicleSkillDistance = 0
+local VehicleSkillDistance = 0 -- Расстояние на автомобиле
 local VehicleWriteDistance = 0
-local PedDistance = 0 -- Расстояние пешком
-local PedSkillDistance = 0
+local PedSkillDistance = 0 -- Расстояние пешком
 local PedWriteDistance = 0
 local drx,dry,drz = getElementPosition(localPlayer)
+local PedStats = {}
+
+for slot = 3, 4 do
+	PedStats[slot] = getPedStat(localPlayer, slot)
+end
+
+
+function GetStats(skill)
+	if(PedStats[skill]) then
+		return PedStats[skill]
+	else
+		return 0
+	end
+end
+
 
 
 function SendCoordsToServer()
@@ -54,7 +67,7 @@ function checkKey()
 		local distance = getDistanceBetweenPoints3D(drx, dry, drz, x, y, z)
 		drx,dry,drz = x,y,z
 		
-		VehicleDistance = VehicleDistance+distance
+		PedStats[4] = PedStats[4]+distance
 		VehicleSkillDistance = VehicleSkillDistance+distance
 		
 		if(VehicleSkillDistance >= 3000) then
@@ -88,7 +101,7 @@ function checkKey()
 		local distance = getDistanceBetweenPoints3D(drx, dry, drz, x, y, z)
 		drx,dry,drz = x,y,z
 		
-		PedDistance = PedDistance+distance
+		PedStats[3] = PedStats[3]+distance
 		
 		PedSkillDistance = PedSkillDistance+distance
 		if(PedSkillDistance >= 300) then
@@ -214,10 +227,10 @@ end
 if getPlayerName(localPlayer) == "alexaxel705" then
 	bindKey("num_1", "down", saveauto) 
 	bindKey("num_3", "down", save)
-	bindKey("F2", "down", cursor) 
 end
 
 
+bindKey("F2", "down", cursor) 
 
 
 

@@ -4,4 +4,6 @@
 	<script src="server.lua" type="server"/>
 	<script src="client.lua" type="client"/>
 	<export function="PlayerActionEvent" type="client"/>
+	
+	<export function="GetStats" type="client"/>
 </meta>
