@@ -112,7 +112,7 @@ function checkKey()
 		
 		if(WriteStatus) then
 			PedWriteDistance = PedWriteDistance+distance
-			if(PedWriteDistance > 2) then
+			if(PedWriteDistance > 5) then
 				PedWriteDistance = 0
 				save()
 			end
@@ -194,6 +194,7 @@ function saveauto()
 	PedWriteDistance = 0
 	
 	if(not WriteStatus) then
+		save()
 		triggerEvent("helpmessageEvent", localPlayer, "Запись начата")
 		WriteStatus = true
 	else
@@ -216,10 +217,12 @@ function save()
 		end
 		rx,ry,rz = getElementRotation(getPedOccupiedVehicle(localPlayer))
 		triggerEvent("OutputChat", localPlayer, math.round(x, 1)..", "..math.round(y, 1)..", "..math.round(z, 1)..", "..math.round(rz, 0), "Coord")
+		triggerServerEvent("saveserver", localPlayer, localPlayer, x,y,z,rx,ry,rz)
 	else
+		z = getGroundPosition(x,y,z)
 		triggerEvent("OutputChat", localPlayer, math.round(x, 1)..", "..math.round(y, 1)..", "..math.round(z, 1)..", "..math.round(rz, 0), "Coord")
+		triggerServerEvent("saveserver", localPlayer, localPlayer, x,y,z,rx,ry,rz, "PedPath")
 	end
-	triggerServerEvent("saveserver", localPlayer, localPlayer, x,y,z,rx,ry,rz)
 end
 
 
