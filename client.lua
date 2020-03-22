@@ -9,6 +9,7 @@ local PedSkillDistance = 0 -- Расстояние пешком
 local PedWriteDistance = 0
 local drx,dry,drz = getElementPosition(localPlayer)
 local PedStats = {}
+local StreamerDistance = 0
 
 for slot = 3, 4 do
 	PedStats[slot] = getPedStat(localPlayer, slot)
@@ -61,12 +62,21 @@ function GetVehicleType(theVehicle)
 end
 
 function checkKey()
-	local theVehicle = getPedOccupiedVehicle(localPlayer)
-	if(theVehicle) then
-		local x, y, z = getElementPosition(theVehicle)
-		local distance = getDistanceBetweenPoints3D(drx, dry, drz, x, y, z)
-		drx,dry,drz = x,y,z
+	local x,y,z = getElementPosition(localPlayer)
+	local distance = getDistanceBetweenPoints3D(drx, dry, drz, x, y, z)
+	drx,dry,drz = x,y,z
+	
+	StreamerDistance = StreamerDistance+distance
+	if(StreamerDistance > 100) then
+		if(#getElementsByType("ped", getRootElement(), true) < 50) then
+			triggerServerEvent("Streamer", localPlayer, localPlayer)
+		end
+		StreamerDistance = 0
+	end
 		
+	local theVehicle = getPedOccupiedVehicle(localPlayer)
+	
+	if(theVehicle) then
 		PedStats[4] = PedStats[4]+distance
 		VehicleSkillDistance = VehicleSkillDistance+distance
 		
@@ -97,10 +107,6 @@ function checkKey()
 			end
 		end
 	else
-		local x, y, z = getElementPosition(localPlayer)
-		local distance = getDistanceBetweenPoints3D(drx, dry, drz, x, y, z)
-		drx,dry,drz = x,y,z
-		
 		PedStats[3] = PedStats[3]+distance
 		
 		PedSkillDistance = PedSkillDistance+distance
