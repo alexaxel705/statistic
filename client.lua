@@ -9,7 +9,6 @@ local PedSkillDistance = 0 -- Расстояние пешком
 local PedWriteDistance = 0
 local drx,dry,drz = getElementPosition(localPlayer)
 local PedStats = {}
-local StreamerDistance = 0
 
 for slot = 3, 4 do
 	PedStats[slot] = getPedStat(localPlayer, slot)
@@ -66,14 +65,6 @@ function checkKey()
 	local distance = getDistanceBetweenPoints3D(drx, dry, drz, x, y, z)
 	drx,dry,drz = x,y,z
 	
-	StreamerDistance = StreamerDistance+distance
-	if(StreamerDistance > 100) then
-		if(#getElementsByType("ped", getRootElement(), true) < 50) then
-			triggerServerEvent("Streamer", localPlayer, localPlayer)
-		end
-		StreamerDistance = 0
-	end
-		
 	local theVehicle = getPedOccupiedVehicle(localPlayer)
 	
 	if(theVehicle) then
