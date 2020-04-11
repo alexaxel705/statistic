@@ -68,33 +68,35 @@ function checkKey()
 	local theVehicle = getPedOccupiedVehicle(localPlayer)
 	
 	if(theVehicle) then
-		PedStats[4] = PedStats[4]+distance
-		VehicleSkillDistance = VehicleSkillDistance+distance
-		
-		if(VehicleSkillDistance >= 3000) then
-			local VehType = GetVehicleType(theVehicle)
-			VehicleSkillDistance = 0
-			triggerServerEvent("AddSkill", localPlayer, localPlayer, VehTypeSkill[VehType], 1)
-		end
-		
-		
-		if(WriteStatus) then
-			VehicleWriteDistance = VehicleWriteDistance+distance
-			if(VehicleWriteDistance > 10) then
-				VehicleWriteDistance = 0
-				save()
+		if(getPedOccupiedVehicleSeat(localPlayer) == 0) then
+			PedStats[4] = PedStats[4]+distance
+			VehicleSkillDistance = VehicleSkillDistance+distance
+			
+			if(VehicleSkillDistance >= 3000) then
+				local VehType = GetVehicleType(theVehicle)
+				VehicleSkillDistance = 0
+				triggerServerEvent("AddSkill", localPlayer, localPlayer, VehTypeSkill[VehType], 1)
 			end
-		end
-		
-		local i, d = getElementInterior(theVehicle), getElementDimension(theVehicle)
-		local seat = getPedOccupiedVehicleSeat(localPlayer)
-		if(i == 0 and d == 0 and seat == 0) then
-			x, y = math.round(x), math.round(y)
-			if(not Coords[x]) then Coords[x] = {} end
-			if(not Coords[x][y]) then Coords[x][y] = 1 end
-			CountCoords = CountCoords+1
-			if(CountCoords >= 100) then
-				SendCoordsToServer()
+			
+			
+			if(WriteStatus) then
+				VehicleWriteDistance = VehicleWriteDistance+distance
+				if(VehicleWriteDistance > 10) then
+					VehicleWriteDistance = 0
+					save()
+				end
+			end
+			
+			local i, d = getElementInterior(theVehicle), getElementDimension(theVehicle)
+			local seat = getPedOccupiedVehicleSeat(localPlayer)
+			if(i == 0 and d == 0 and seat == 0) then
+				x, y = math.round(x), math.round(y)
+				if(not Coords[x]) then Coords[x] = {} end
+				if(not Coords[x][y]) then Coords[x][y] = 1 end
+				CountCoords = CountCoords+1
+				if(CountCoords >= 100) then
+					SendCoordsToServer()
+				end
 			end
 		end
 	else
